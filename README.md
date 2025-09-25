@@ -1,8 +1,8 @@
 ## How to run
 Either run the script directly: ```./11s_manager.sh``` or add it to the path without the extension and with a shebang... if you need instructions on how to operate scripts, you're in the wrong place.
 ## Expected output
-![Expected output](https://github.com/alletsbckwrds/80211s_Manager/edit/main/readme/output.jpg?raw=true)
-## Config file example
+![Expected output](https://github.com/alletsbckwrds/80211s_Manager/blob/main/readme/out.png?raw=true)
+## Config ~~file~~ script example
 11sconfig.sh:
 ```
 if [ $(id -u) != "0" ]; then
@@ -25,3 +25,6 @@ ip addr add 10.0.0.1/8 dev wlan0
 ##Stability options:
 #iw dev wlan0 set power_save off
 ```
+## Issues
+This is really just a small draft of a script, it's really just meant to save some time.<br/>
+One issue is that it saves the password in clear text, another is that the password cannot contain certain characters (due to my decision of scripting in bash)

@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 if [ -f ./11sconfig.sh ]; then
 	printf "Configuration file found. Apply now [A] or create new? [n] "
 	read choice

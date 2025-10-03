@@ -28,3 +28,5 @@ ip addr add 10.0.0.1/8 dev wlan0
 ## Issues
 This is really just a small draft of a script, it's really just meant to save some time.<br/>
 One issue is that it saves the password in clear text, another is that the password cannot contain certain characters (due to my decision of scripting in bash)
+## Todo
+I honestly should've used Python or some other language.. so i might re-write it in the future.

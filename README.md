@@ -1,5 +1,5 @@
 ## How to run
-Either run the script directly: ```./11s_manager.sh``` or add it to the path without the extension and with a shebang... if you need instructions on how to operate scripts, you're in the wrong place.
+Either run the script directly: ```./11s_manager.sh``` or link/add it to the path.
 ## Expected output
 ![Expected output](https://github.com/alletsbckwrds/80211s_Manager/blob/main/readme/out.png?raw=true)
 ## Config ~~file~~ script example

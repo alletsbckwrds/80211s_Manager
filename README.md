@@ -1,5 +1,7 @@
 ## How to run
 Either run the script directly: ```./11s_manager.sh``` or link/add it to the path.
+### Warning
+Not all NICs support "mesh point" mode. Modern ones should though.
 ## Expected output
 ![Expected output](https://github.com/alletsbckwrds/80211s_Manager/blob/main/readme/out.png?raw=true)
 ## Config ~~file~~ script example

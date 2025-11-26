@@ -8,6 +8,7 @@ DO NOT build multiple languages before installing! Run ```make clean``` if you n
 - Not all NICs support "mesh point" mode. Modern ones should though.
 - This program uses ```sudo```, if you use ```doas``` or ```su -c```, i trust you to know how to edit this program.
 - To uninstall: ```sudo make uninstall```
+- Depends on ```iw```
 ## Expected output
 ![Expected output](https://github.com/alletsbckwrds/80211s_Manager/blob/main/readme/out.png?raw=true)
 ## Config ~~file~~ script example

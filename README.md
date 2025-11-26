@@ -1,12 +1,20 @@
-## How to run
-Either run the script directly: ```./11s_manager.sh``` or link/add it to the path.
+## How to build
+- First compile: ```make english``` (Spanish is also supported. Japanese has issues, so it has been disabled.)<br/>
+- Then install: ```sudo make install```
+- Use it: ```mmcli```
 ### Warning
-Not all NICs support "mesh point" mode. Modern ones should though.
+DO NOT build multiple languages before installing! Run ```make clean``` if you need to rebuild.
+### Note
+- Not all NICs support "mesh point" mode. Modern ones should though.
+- This program uses ```sudo```, if you use ```doas``` or ```su -c```, i trust you to know how to edit this program.
+- To uninstall: ```sudo make uninstall```
 ## Expected output
 ![Expected output](https://github.com/alletsbckwrds/80211s_Manager/blob/main/readme/out.png?raw=true)
 ## Config ~~file~~ script example
-11sconfig.sh:
+~/.mesh_config:
 ```
+#!/bin/bash
+
 if [ $(id -u) != "0" ]; then
 echo "Error, run as root."
 exit
@@ -28,7 +36,7 @@ ip addr add 10.0.0.1/8 dev wlan0
 #iw dev wlan0 set power_save off
 ```
 ## Issues
-This is really just a small draft of a script, it's really just meant to save some time.<br/>
-One issue is that it saves the password in clear text, another is that the password cannot contain certain characters (due to my decision of scripting in bash)
+japanese language does not work, Password field correctly handles special characters, but mesh name field does not.
 ## Todo
-I honestly should've used Python or some other language.. so i might re-write it in the future.
+- Implement all the languages listed in the makefile
+- Handle flags: "mmcli -a" to apply config instantly, "mmcli -V" for version, and "mmcli -*" for help.

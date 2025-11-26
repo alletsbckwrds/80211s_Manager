@@ -1,0 +1,10 @@
+#define STRONE std::wcout<<"コンフィギュレーションのファイルもうあります。Apply now [A] or create new? [n] "
+#define STRTWO std::wcout<<"デバイス："
+#define STRTHREE std::wcout<<"メッシュネットワーク名："
+#define STRFOUR std::wcout<<"周波数（デフォルト：2412）："
+#define STRFIVE std::wcout<<"帯域幅（デフォルト：「HT20」）："
+#define STRSIX std::wcout<<"暗号化なし [1] (デフォ), WPA2-PSK [2], WPA3-SAE [3]: "
+#define STRSEVEN std::wcout<<"パスワード："
+#define STREIGHT std::wcout<<"IPv4 in xxx.xxx.xxx.xxx/mask format: "
+#define STRNINE std::wcout<<"Configuration file created!\nApply now? [Y/n] "
+//i used https://r12a.github.io/app-conversion/ to get unicode

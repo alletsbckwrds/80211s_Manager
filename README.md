@@ -39,5 +39,6 @@ ip addr add 10.0.0.1/8 dev wlan0
 ## Issues
 japanese language does not work, Password field correctly handles special characters, but mesh name field does not.
 ## Todo
-- Implement all the languages listed in the makefile
+- Implement all the languages listed in the makefile.
 - Handle flags: "mmcli -a" to apply config instantly, "mmcli -V" for version, and "mmcli -*" for help.
+- Handle IPv6 addresses.

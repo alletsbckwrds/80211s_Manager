@@ -18,15 +18,36 @@ std::string sanitise (std::string& in) {
 	return in;
 }
 
+void flagcheck(char flag) {
+	switch(flag){
+		case 'a':
+			system("sudo ~/.config/.mesh_config");
+			break;
+		case 'd':
+			system("iw list | grep -e \" phy\" -e \"* mesh point$\"");
+			break;
+		case 'V':
+			std::cout<<"Version 0.1.0\n";
+			break;
+		default:
+			std::cout<<"Usage: mmcli [-a|-d|-V|-h]\n\n\t-a\tInstantly apply configuration.\n\t-d\tDiagnose NICs for 802.11s support.\n\t-V\tPrint version.\n\t-h\tPrint this help message\n";		
+	}
+}
+
 int main (int argc, char *argv[]) {
+	if(argc > 1){
+		flagcheck(argv[1][1]);
+		return 0;
+	}
+
 	char choice = 'm';
 	std::string iwdevice,meshnm,frqcy,bwht,ipass;
 	std::string homedir = getenv("HOME");
 
-	if(fexists(homedir+"/.mesh_config")){
+	if(fexists(homedir+"/.config/.mesh_config")){
 		STRONE;
 		std::cin>>choice;
-		if(choice != 'n'){system("sudo ~/.mesh_config");}
+		if(choice != 'n'){system("sudo ~/.config/.mesh_config");}
 	}
 
 	STRTWO;
@@ -75,8 +96,8 @@ int main (int argc, char *argv[]) {
 	//if(iwdevice == ""){std::cout<<"Invalid device."; return 12;}
 	//if(psk == "" && wpaver != ""){std::cout<<"Error, password empty."; return 13;}
 
-	system("touch ~/.mesh_config 2>/dev/null"); //will fail if file already exists
-	system("sudo chown root:root ~/.mesh_config && sudo chmod 722 ~/.mesh_config"); //rwx-w--w-
+	system("touch ~/.config/.mesh_config 2>/dev/null"); //will fail if file already exists
+	system("sudo chown root:root ~/.config/.mesh_config && sudo chmod 722 ~/.mesh_config"); //rwx-w--w-
 
 	//reusing variable psk to output to file
 	psk = "#!/bin/bash\n\nif [ $(id -u) != \"0\" ]; then\necho \"Error, run as root.\"\nexit\nfi\n\n";
@@ -85,18 +106,18 @@ int main (int argc, char *argv[]) {
 	psk += ("iw dev "+iwdevice+" mesh join "+meshnm+" "+frqcy+" "+bwht+" "+keymgmt+wpaver+"\necho \"Setting IPv4...\"\n");
 	psk += ("ip addr add "+ipass+" dev "+iwdevice+"\n\n##Stability options:\n#iw dev "+iwdevice+" set power_save off\n");
 
-	std::ofstream ConfigFile(homedir+"/.mesh_config");
+	std::ofstream ConfigFile(homedir+"/.config/.mesh_config");
 	ConfigFile<<psk;
 	ConfigFile.close();
 
-	system("sudo chmod 710 ~/.mesh_config"); //rwx--x---
+	system("sudo chmod 710 ~/.config/.mesh_config"); //rwx--x---
 
 	STRNINE;
 	std::cin>>choice;
 	if(choice == 'n'){
 		return 0;
 	}else{
-		system("sudo ~/.mesh_config");
+		system("sudo ~/.config/.mesh_config");
 	}
 
 	return 0;

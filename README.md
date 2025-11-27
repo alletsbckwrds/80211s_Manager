@@ -5,14 +5,15 @@
 ### Warning
 DO NOT build multiple languages before installing! Run ```make clean``` if you need to rebuild.
 ### Note
-- Not all NICs support "mesh point" mode. Modern ones should though.
+- Not all NICs support "mesh point" mode. Modern ones should though. See if yours does with ```mmcli -d```
 - This program uses ```sudo```, if you use ```doas``` or ```su -c```, i trust you to know how to edit this program.
 - To uninstall: ```sudo make uninstall```
 - Depends on ```iw```
+- More usage instructions with: ```mmcli -h```
 ## Expected output
 ![Expected output](https://github.com/alletsbckwrds/80211s_Manager/blob/main/readme/out.png?raw=true)
 ## Config ~~file~~ script example
-~/.mesh_config:
+~/.config/.mesh_config:
 ```
 #!/bin/bash
 
@@ -40,5 +41,5 @@ ip addr add 10.0.0.1/8 dev wlan0
 japanese language does not work, Password field correctly handles special characters, but mesh name field does not.
 ## Todo
 - Implement all the languages listed in the makefile.
-- Handle flags: "mmcli -a" to apply config instantly, "mmcli -V" for version, and "mmcli -*" for help.
 - Handle IPv6 addresses.
+- Improve the code (help is appreciated, this code is so bad!).

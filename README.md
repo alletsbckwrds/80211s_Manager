@@ -42,4 +42,5 @@ japanese language does not work, Password field correctly handles special charac
 ## Todo
 - Implement all the languages listed in the makefile.
 - Handle IPv6 addresses.
+- Handle multiple configurations.
 - Improve the code (help is appreciated, this code is so bad!).

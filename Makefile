@@ -40,4 +40,4 @@ install:
 
 uninstall:
 	rm /usr/local/bin/mmcli
-	echo "Remember the config file in ~/.config/.mesh_config"
+	echo "Remember the config files in ~/.config/mmcli_conf/*"

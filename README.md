@@ -18,3 +18,4 @@ japanese language does not work, Password field correctly handles special charac
 - Handle IPv6 addresses.
 - ~~Handle multiple configurations.~~
 - Improve the code (help is appreciated, this code is so bad!).
+- Make it do everything in C++, no system() calls.

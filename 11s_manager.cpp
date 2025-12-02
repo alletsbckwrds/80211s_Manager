@@ -14,7 +14,7 @@ bool fexists (const std::string& name) {
 	return (stat (name.c_str(), &buffer) == 0);
 }
 
-std::string sanitise (std::string& in) {
+std::string sanitise (std::string& in) { //yes, it modifies the string, and then also returns it. this is on purpose.
 	int pos = 0;
 	while((pos=in.find('\x5C',pos)) != std::string::npos){
 		in.replace(pos,1,"\x5C\x5C");
@@ -34,8 +34,8 @@ std::string sanitise (std::string& in) {
 }
 
 void check_safety_of_str(std::string& in) {
-	//i prefer not to deal with these...
-	if(in.find(' ') != std::string::npos || in.find('\'') != std::string::npos || in.find('$') != std::string::npos || in.find('(') != std::string::npos || in.find('[') != std::string::npos) {
+	//i prefer not to deal with these characters...
+	if(in.find(' ') != std::string::npos || in.find('\'') != std::string::npos || in.find('$') != std::string::npos || in.find('(') != std::string::npos || in.find('[') != std::string::npos || in.find('&') != std::string::npos || in.find(';') != std::string::npos) {
 		std::cout<<"Error: Bad character detected. Exiting.\n";
 		exit(EXIT_FAILURE);
 	}
@@ -44,7 +44,9 @@ void check_safety_of_str(std::string& in) {
 void apply_conf(const char *profilename) {
 	std::string cpp_profilename = profilename;
 	check_safety_of_str(cpp_profilename);
-	std::string command = "sudo ~/.config/mmcli_conf/.mesh_config"; //using a C string with strcat() caused stack smashing, unless i reallocated the memory, so i used C++. feel free to rewrite in C
+	std::string command = "sudo ";
+	command += getenv("HOME");
+	command += "/.config/mmcli_conf/.mesh_config";
 	command += cpp_profilename;
 	system(command);
 }
@@ -85,36 +87,25 @@ void new_config() {
 	STRSIX;
 	std::cin>>choice;
 	std::string wpaver="";
-	std::string psk; //,keymgmt="";
+	std::string psk;
 	if (choice == '2'){
 		wpaver="ctrl_interface=/var/run/wpa_supplicant\nuser_mpm=1\n\nnetwork={\n\tssid=\""+meshnm+"\"\n\tmode=5\n\tfrequency="+frqcy+"\n\tkey_mgmt=SAE\n\tpsk=";
 	}
-	/*switch(choice){
-		case '2':
-			wpaver="TF-PSK psk ";
-			break;
-		case '3':
-			wpaver="SAE psk ";
-	}*/
+
 	if(wpaver != ""){
 		STRSEVEN;
 		std::cin>>psk;
 		wpaver += ("\""+sanitise(psk)+"\"\n}");
-		//keymgmt = "key_mgmt ";
 	}
 
 	STREIGHT;
 	std::cin>>ipass;
 
-	//if(ipass == ""){std::cout<<"Invalid IP."; return 10;}
-	//if(meshnm == ""){std::cout<<"Invalid mesh."; return 11;}
-	//if(iwdevice == ""){std::cout<<"Invalid device."; return 12;}
-	//if(psk == "" && wpaver != ""){std::cout<<"Error, password empty."; return 13;}
 
-	system("mkdir ~/.config 2>/dev/null");
-	system("mkdir ~/.config/mmcli_conf 2>/dev/null");
-	system("touch ~/.config/mmcli_conf/.mesh_config"+profilename+" 2>/dev/null"); //will fail if file already exists
-	system("sudo chown root:root ~/.config/mmcli_conf/.mesh_config"+profilename+" && sudo chmod 722 ~/.config/mmcli_conf/.mesh_config"+profilename); //rwx-w--w-
+	system("mkdir "+homedir+"/.config 2>/dev/null");
+	system("mkdir "+homedir+"/.config/mmcli_conf 2>/dev/null");
+	system("touch "+homedir+"/.config/mmcli_conf/.mesh_config"+profilename+" 2>/dev/null"); //will fail if file already exists
+	system("sudo chown root:root "+homedir+"/.config/mmcli_conf/.mesh_config"+profilename+" && sudo chmod 722 "+homedir+"/.config/mmcli_conf/.mesh_config"+profilename); //rwx-w--w-
 
 	//reusing variable psk to output to file
 	psk = "#!/bin/bash\n\nif [ $(id -u) != \"0\" ]; then\necho \"Error, run as root.\"\nexit\nfi\n\n";
@@ -131,17 +122,17 @@ void new_config() {
 	ConfigFile<<psk;
 	ConfigFile.close();
 
-	system("sudo chmod 710 ~/.config/mmcli_conf/.mesh_config"+profilename); //rwx--x---
+	system("sudo chmod 710 "+homedir+"/.config/mmcli_conf/.mesh_config"+profilename); //rwx--x---
 	
 	if(wpaver != ""){ //if user selected encryption, create the wpa_config file
-		system("touch ~/.config/mmcli_conf/.wpa_config"+profilename+" 2>/dev/null"); //will fail if file already exists
-		system("sudo chown root:root ~/.config/mmcli_conf/.wpa_config"+profilename+" && sudo chmod 722 ~/.config/mmcli_conf/.wpa_config"+profilename); //rwx-w--w-
+		system("touch "+homedir+"/.config/mmcli_conf/.wpa_config"+profilename+" 2>/dev/null"); //will fail if file already exists
+		system("sudo chown root:root "+homedir+"/.config/mmcli_conf/.wpa_config"+profilename+" && sudo chmod 722 "+homedir+"/.config/mmcli_conf/.wpa_config"+profilename); //rwx-w--w-
 	
 		std::ofstream WpaFile(homedir+"/.config/mmcli_conf/.wpa_config"+profilename);
 		WpaFile<<wpaver;
 		WpaFile.close();
 		
-		system("sudo chmod 710 ~/.config/mmcli_conf/.wpa_config"+profilename); //rwx--x---
+		system("sudo chmod 710 "+homedir+"/.config/mmcli_conf/.wpa_config"+profilename); //rwx--x---
 	}
 
 	STRNINE;
@@ -149,7 +140,7 @@ void new_config() {
 	if(choice == 'n'){
 		return;
 	}else{
-		system("sudo ~/.config/mmcli_conf/.mesh_config"+profilename);
+		system("sudo "+homedir+"/.config/mmcli_conf/.mesh_config"+profilename);
 	}
 }
 
@@ -160,6 +151,8 @@ void flagcheck(char flag, const char *arg) {
 			break;
 		case 'd':
 			system("iw list | grep -e \" phy\" -e \"* mesh point$\"");
+			std::cout<<"-----wpa_supplicant version:-----\n";
+			system("wpa_supplicant -v");
 			break;
 		case 'k':
 			system("sudo systemctl stop NetworkManager && sudo systemctl stop wpa_supplicant");
@@ -168,7 +161,7 @@ void flagcheck(char flag, const char *arg) {
 			new_config();
 			break;
 		case 'V':
-			std::cout<<"Version 0.2.0\n";
+			std::cout<<"Version 0.2.1\n";
 			break;
 		default:
 			std::cout<<"Mesh network Manager Command Line Interface\nUsage: mmcli [-a|-d|-V|-n|-k|-h]\n\n\t-a PROFILE\tInstantly apply configuration.\n\t-d\t\tDiagnose NICs for 802.11s support.\n\t-V\t\tPrint version.\n\t-h\t\tPrint this help message.\n\t-k\t\tKill often-conflicting services.\n\t-n\t\tCreate new config (default).\n";		
@@ -177,7 +170,7 @@ void flagcheck(char flag, const char *arg) {
 
 int main (int argc, char *argv[]) {
 	if(argc > 1){
-		flagcheck(argv[1][1], argc>2 ? argv[2] : "" ); //this is so good to look at
+		flagcheck(argv[1][1], argc>2 ? argv[2] : "" ); //this is so good to look at lol
 		return 0;
 	}
 

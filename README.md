@@ -9,7 +9,7 @@ DO NOT build multiple languages before installing! Run ```make clean``` if you n
 - This program uses ```sudo```, if you use ```doas``` or ```su -c```, i trust you to know how to edit this program.
 - To uninstall: ```sudo make uninstall```
 - Depends on ```iw``` and ```wpa_supplicant```
-- Not all builds of ```wpa_supplicant``` support mesh mode. if you get weird errors after wpa_supplicant initialisation, maybe your build does not support mesh.
+- Not all builds of ```wpa_supplicant``` support mesh mode. if you get weird errors after wpa_supplicant initialisation, maybe your build does not support mesh. I have ```wpa_supplicant v2.11-hostap_2_11+``` and it works.
 - More usage instructions with: ```mmcli -h```
 ## Issues
 japanese language does not work, Password field correctly handles special characters, but mesh name field does not.

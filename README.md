@@ -1,7 +1,10 @@
-## How to build
+## How to install
 - First compile: ```make english``` (Spanish is also supported.)<br/>
 - Then install: ```sudo make install```
 - Use it: ```mmcli -h```
+#### Or use pkgit
+- ```pkgit -a https://github.com/alletsbckwrds/80211s_Manager```
+- ```pkgit -i 80211s_Manager```
 ### Warning
 DO NOT build multiple languages before installing! Run ```make clean``` if you need to rebuild.
 ### Note
